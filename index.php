@@ -45,22 +45,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Hotel? Boo-Le-An</title>
 </head>
 <body>
-    <div class="ivy_cards">
+    <form action="./server.php" method="GET"></form>
+    <div class="ivy_cards d-flex justify-content-center">
         <?php foreach($hotels as $hotel) { ?>
-            <div class="card text-center">
+            <div class="card text-center m-2">
                 <div class="card-header">
                     <?php echo $hotel['name'] ?>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
+                    <h5 class="card-title text-warning">
+                        <?php for ($i = 0; $i < $hotel['vote']; $i++) { ?>
+                            <span> <i class="fa-solid fa-star"></i> </span>
+                        <?php   } ?>
+                        <?php for ($i = 0; $i < (5 - $hotel['vote']); $i++) { ?>
+                            <span> <i class="fa-regular fa-star"></i> </span>
+                        <?php   } ?>
+                    </h5>
                     <p class="card-text"><?php echo $hotel['description'] ?></p>
+                    <p class="card-text">
+                        <?php if ($hotel['parking']) { ?>
+                            <span class="text-success"><i class="fa-solid fa-square-parking fa-2x"></i></span>
+                        <?php } ?>
+                    </p>
                 </div>
                     <div class="card-footer text-muted">
-                        2 days ago
+                        <?php echo $hotel['distance_to_center'] ?> km from center
                     </div>
                 </div>
         <?php } ?>
