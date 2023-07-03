@@ -38,15 +38,20 @@
     ];
     $hotels = $originalHotels;
     $parking = $_GET['parkingFilter'];
-
+    $vote = intval($_GET['voteRadio']);
 
     if ($parking === '0') {
-        $hotels = array_filter($originalHotels, function($hotel){return $hotel['parking'] === false;});
+        $hotels = array_filter(array_filter($originalHotels, 
+            function($hotel){
+                return $hotel['parking'] === false;
+            }), function($hotel) use ($vote){return $hotel['vote'] >= $vote;});
     } elseif ($parking === '1'){
-        $hotels = array_filter($originalHotels, function($hotel){return $hotel['parking'] === true;});
+        $hotels = array_filter(array_filter($originalHotels, function($hotel){return $hotel['parking'] === true;}), function($hotel) use ($vote){return $hotel['vote'] >= $vote;});
     } else {
-        $hotels = $originalHotels;
+        $hotels = array_filter($originalHotels, function($hotel) use ($vote){return $hotel['vote'] >= $vote;});
     };
+
+
 ?>
 
 <!DOCTYPE html>
@@ -60,23 +65,45 @@
 </head>
 <body>
     <form action="./index.php" method="GET" class="m-4">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="parkingFilter" id="parking_und" value="2" checked>
-            <label class="form-check-label text-primary" for="parking_und">
-                All Result
-            </label>
+        <div class="wrapper">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="parkingFilter" id="parking_und" value="2" checked>
+                <label class="form-check-label text-primary" for="parking_und">
+                    All Result
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="parkingFilter" id="parking_false" value="0">
+                <label class="form-check-label text-danger" for="parking_false">
+                    Parking not avaible
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="parkingFilter" id="parking_true" value="1">
+                <label class="form-check-label text-success" for="parking_true">
+                    Parking avaible
+                </label>
+            </div>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="parkingFilter" id="parking_false" value="0">
-            <label class="form-check-label text-danger" for="parking_false">
-                Parking not avaible
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="parkingFilter" id="parking_true" value="1">
-            <label class="form-check-label text-success" for="parking_true">
-                Parking avaible
-            </label>
+        <div class="wrapper mt-5">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="voteRadio" id="voteAll" value="0" checked>
+                <label class="form-check-label text-primary" for="voteAll">
+                    0+
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="voteRadio" id="parking_false" value="2">
+                <label class="form-check-label text-warning" for="vote_all">
+                    2+
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="voteRadio" id="parking_true" value="4">
+                <label class="form-check-label text-success" for="parking_true">
+                    4+
+                </label>
+            </div>
         </div>
         <button type="submit" class="btn btn-outline-primary mt-4">Filter</button>
     </form>
@@ -88,10 +115,12 @@
             }else{
                 echo 'All Result';
             };?>
+            --
+        <?php echo $vote . '+'?>
     </h2>
     <div class="ivy_cards d-flex justify-content-center">
         <?php foreach($hotels as $hotel) { ?>
-            <div class="card text-center m-2">
+            <div class="card text-center m-2 flex-grow-1">
                 <div class="card-header">
                     <?php echo $hotel['name'] ?>
                 </div>
