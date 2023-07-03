@@ -47,6 +47,13 @@
     <title>Hotel? Boo-Le-An</title>
 </head>
 <body>
-
+    <ul>
+        <?php foreach($hotels as $hotel) { ?>
+            <li>
+                <p> <?php echo $hotel['name'] ?> </p>
+                <p> <?php echo $hotel['description'] ?> </p>
+            </li>
+        <?php } ?>
+    </ul>
 </body>
 </html>
