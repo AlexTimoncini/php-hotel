@@ -1,6 +1,5 @@
 <?php
-
-    $hotels = [
+    $originalHotels = [
         [
             'name' => 'Hotel Belvedere',
             'description' => 'Hotel Belvedere Descrizione',
@@ -37,7 +36,17 @@
             'distance_to_center' => 50
         ],
     ];
+    $hotels = $originalHotels;
+    $parking = $_GET['parkingFilter'];
 
+
+    if ($parking === '0') {
+        $hotels = array_filter($originalHotels, function($hotel){return $hotel['parking'] === false;});
+    } elseif ($parking === '1'){
+        $hotels = array_filter($originalHotels, function($hotel){return $hotel['parking'] === true;});
+    } else {
+        $hotels = $originalHotels;
+    };
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +59,36 @@
     <title>Hotel? Boo-Le-An</title>
 </head>
 <body>
-    <form action="./server.php" method="GET"></form>
+    <form action="./index.php" method="GET" class="m-4">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="parkingFilter" id="parking_und" value="2" checked>
+            <label class="form-check-label text-primary" for="parking_und">
+                All Result
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="parkingFilter" id="parking_false" value="0">
+            <label class="form-check-label text-danger" for="parking_false">
+                Parking not avaible
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="parkingFilter" id="parking_true" value="1">
+            <label class="form-check-label text-success" for="parking_true">
+                Parking avaible
+            </label>
+        </div>
+        <button type="submit" class="btn btn-outline-primary mt-4">Filter</button>
+    </form>
+    <h2 class="ps-2">
+        <?php if($parking === '0'){ 
+                echo 'Without Parking'; 
+            }elseif($parking === '1'){
+                echo 'With Parking';
+            }else{
+                echo 'All Result';
+            };?>
+    </h2>
     <div class="ivy_cards d-flex justify-content-center">
         <?php foreach($hotels as $hotel) { ?>
             <div class="card text-center m-2">
