@@ -39,21 +39,31 @@
     ];
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Hotel? Boo-Le-An</title>
 </head>
 <body>
-    <ul>
+    <div class="ivy_cards">
         <?php foreach($hotels as $hotel) { ?>
-            <li>
-                <p> <?php echo $hotel['name'] ?> </p>
-                <p> <?php echo $hotel['description'] ?> </p>
-            </li>
+            <div class="card text-center">
+                <div class="card-header">
+                    <?php echo $hotel['name'] ?>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text"><?php echo $hotel['description'] ?></p>
+                </div>
+                    <div class="card-footer text-muted">
+                        2 days ago
+                    </div>
+                </div>
         <?php } ?>
-    </ul>
+    </div>
 </body>
 </html>
